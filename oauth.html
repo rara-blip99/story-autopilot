@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Story Autopilot – Sign-in</title>
+  <style>
+    body { font: 16px/1.6 system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #1d1d24; background: #fff; }
+  </style>
+</head>
+<body>
+  <h1>Story Autopilot</h1>
+  <p id="msg">Returning to the desktop app…</p>
+  <script>
+    // Instagram/TikTok only accept https redirects. This page hands the result
+    // back to the desktop app's local server; the port travels in "state".
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var port = (q.get('state') || '').split('.')[0];
+      if (!/^\d{4,5}$/.test(port)) {
+        document.getElementById('msg').textContent = 'Invalid sign-in response. Please start the connection again from the app.';
+        return;
+      }
+      location.replace('http://127.0.0.1:' + port + '/callback' + location.search);
+    })();
+  </script>
+</body>
+</html>
